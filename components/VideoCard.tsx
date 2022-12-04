@@ -32,7 +32,7 @@ const VideoCard: NextPage<IVideoCardProps> = ({ post }) => {
             <div>
                 <div className='flex gap-3 p-2 cursor-pointer font-semibold rounded'>
                     <div className='md:w-16 md:h-16 w-10 h-10'>
-                        <Link href="/">
+                        <Link href={`/detail/${post._id}`}>
                             <>
                                 <Image
                                     width={62}
@@ -63,7 +63,7 @@ const VideoCard: NextPage<IVideoCardProps> = ({ post }) => {
             <div className='lg:ml-20 flex gap-4 relative'>
                 <div className='rounded-3xl' onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} >
                     <Link href='/'>
-                        <video ref={videoRef} src={post.video.asset.url} loop className='lg:w-[600px] h-[300px] md:h-[400px] lg:h-[530px] w-[200px] rounded-2xl bg-gray-100'>
+                        <video ref={videoRef} src={post.video.asset.url} loop className='lg:w-[600px] h-[300px] md:h-[400px] lg:h-[530px] w-[400px] rounded-2xl bg-gray-100'>
                         </video>
                     </Link>
                     {isHover && (
