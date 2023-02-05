@@ -8,6 +8,7 @@ import { SanityAssetDocument } from '@sanity/client';
 import useAuthStore from '../store/authStore';
 import { client } from '../utils/client';
 import { topics } from '../utils/constants';
+import { BASE_URL } from '../utils';
 
 const UploadPage: NextPage = () => {
     const { userProfile }: { userProfile: any } = useAuthStore();
@@ -59,7 +60,7 @@ const UploadPage: NextPage = () => {
                 },
                 topic: category
             }
-            await axios.post('http://localhost:3000/api/post', document);
+            await axios.post(`${BASE_URL}/api/post`, document);
             router.push('/');
         }
     }
