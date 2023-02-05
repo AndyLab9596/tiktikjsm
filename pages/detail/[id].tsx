@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { GoVerified } from 'react-icons/go';
-import { MdOutlineCancel } from 'react-icons/md';
+import { useRouter } from 'next/router';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill } from 'react-icons/bs';
-import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi';
-import axios from 'axios';
-import { BASE_URL } from '../../utils';
-import { Video } from '../../types';
-import useAuthStore from '../../store/authStore';
-import LikeButton from '../../components/LikeButton';
+import { GoVerified } from 'react-icons/go';
+import { HiVolumeOff, HiVolumeUp } from 'react-icons/hi';
+import { MdOutlineCancel } from 'react-icons/md';
 import Comments from '../../components/Comments';
+import LikeButton from '../../components/LikeButton';
+import useAuthStore from '../../store/authStore';
+import { Video } from '../../types';
+import { BASE_URL } from '../../utils';
 
 interface IProps {
   postDetails: Video
@@ -22,6 +22,8 @@ const DetailPage = ({ postDetails }: IProps) => {
   const [playing, setPlaying] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const { userProfile } = useAuthStore();
+  const [comment, setComment] = useState('');
+  const [isPostingComment, setIsPostingComment] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
@@ -44,6 +46,22 @@ const DetailPage = ({ postDetails }: IProps) => {
         like,
       })
       setPost({ ...post, likes: data.likes })
+    }
+  }
+
+  const addComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userProfile && comment) {
+      setIsPostingComment(true);
+
+      const { data } = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
+        userId: userProfile._id,
+        comment
+      })
+
+      setPost({...post, comments: data.comments});
+      setComment('');
+      setIsPostingComment(false);
     }
   }
 
@@ -132,18 +150,17 @@ const DetailPage = ({ postDetails }: IProps) => {
           <div className='mt-10 px-10'>
             {userProfile && <LikeButton
               likes={post.likes}
-              // flex='flex'
               handleLike={() => handleLike(true)}
               handleDislike={() => handleLike(false)}
             />}
           </div>
 
           <Comments
-          // comment={comment}
-          // setComment={setComment}
-          // addComment={addComment}
-          // comments={post.comments}
-          // isPostingComment={isPostingComment}
+            comment={comment}
+            setComment={setComment}
+            addComment={addComment}
+            comments={post.comments}
+            isPostingComment={isPostingComment}
           />
 
         </div>
