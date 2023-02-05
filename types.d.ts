@@ -18,6 +18,8 @@ export interface Video {
             userName: string;
             image: string;
         };
+        _key?: string;
+        _ref?: string;
     }[];
     comments: {
         comment: string;

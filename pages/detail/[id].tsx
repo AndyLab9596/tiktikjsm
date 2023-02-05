@@ -21,7 +21,7 @@ const DetailPage = ({ postDetails }: IProps) => {
   const [post, setPost] = useState(postDetails);
   const [playing, setPlaying] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
-  const { userProfile }: any = useAuthStore();
+  const { userProfile } = useAuthStore();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
@@ -43,7 +43,6 @@ const DetailPage = ({ postDetails }: IProps) => {
         postId: post._id,
         like,
       })
-      console.log('data', data)
       setPost({ ...post, likes: data.likes })
     }
   }
